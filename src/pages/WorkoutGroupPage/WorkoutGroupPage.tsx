@@ -1,3 +1,6 @@
+import { useWorkoutGroups } from "../../hooks/useWorkoutGroups";
+
 export function WorkoutGroupPage() {
-  return <div>Group List Page</div>;
+  const {workoutGroups} = useWorkoutGroups()
+  return <div>{workoutGroups?.map(group => <div key={group.id}>{group.name}</div>)}</div>;
 }
