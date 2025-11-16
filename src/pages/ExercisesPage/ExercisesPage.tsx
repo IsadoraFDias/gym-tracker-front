@@ -1,3 +1,9 @@
+import { ContentComponents, TitlePage } from "../../components";
+
 export function ExercisesPage() {
-    return <div>Exercises Page</div>;
+  return (
+    <ContentComponents>
+      <TitlePage title="Detalhe do Treino" />
+    </ContentComponents>
+  );
 }

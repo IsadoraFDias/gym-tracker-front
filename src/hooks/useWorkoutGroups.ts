@@ -1,6 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import * as api from "../api/workoutGroups";
-import type { WorkoutGroup } from "../types";
+import type { GroupInput, WorkoutGroup } from "../types";
 
 
 export function useWorkoutGroups() {
@@ -21,6 +21,17 @@ export function useWorkoutGroups() {
     }
   });
 
+  const {mutate: updateGroup, isPending: isUpdating} = useMutation({
+    mutationFn: ({ id, updatedGroup }: { id: string; updatedGroup: GroupInput }) => 
+      api.updateWorkoutGroup(id, updatedGroup),
+    onSuccess: () => {
+      queryCliente.invalidateQueries({ queryKey: queryKey });
+    },
+    onError: (error: Error) => {
+      console.error("Erro ao atualizar grupo de treino:", error.message);
+    }
+  });
+
   const {mutate: deleteGroup, isPending: isDeleting} = useMutation({
     mutationFn: api.deleteWorkoutGroup,
     onSuccess: () => {
@@ -38,6 +49,8 @@ export function useWorkoutGroups() {
     createGroup,
     isCreating,
     deleteGroup,
-    isDeleting
+    isDeleting,
+    updateGroup,
+    isUpdating
   };
 }

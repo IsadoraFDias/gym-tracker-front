@@ -42,3 +42,18 @@ export const deleteWorkoutGroup = async (id: string): Promise<void> => {
     throw new Error(errorData.error || "Failed to delete workout group");
   }
 }
+
+export const updateWorkoutGroup = async (id: string, updatedGroup: GroupInput): Promise<WorkoutGroup> => {
+  const response = await fetch(`${API_URL}/workout-groups/${id}`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(updatedGroup)
+  });
+  if (!response.ok) {
+    const errorData = await response.json();
+    throw new Error(errorData.error || "Failed to update workout group");
+  }
+  return response.json();
+}
