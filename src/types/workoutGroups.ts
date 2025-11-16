@@ -1,5 +1,5 @@
 export interface WorkoutExercise {
-  id: number;
+  id: string;
   name: string;
   isFreeExercise: boolean;
   time?: number;
@@ -10,7 +10,21 @@ export interface WorkoutExercise {
 }
 
 export interface WorkoutGroup {
-  id: number;
+  id: string;
   name: string;
-  exercises: WorkoutExercise[]; 
+  description: string;
+  user_id: string;
+  exercises?: WorkoutExercise[]; 
+}
+
+export type WorkoutGroupsSummary = {
+  id: string;
+  name: string;
+  description: string;
+  user_id: string;
+}
+
+export type GroupInput = {
+  name: string;
+  description: string;
 }

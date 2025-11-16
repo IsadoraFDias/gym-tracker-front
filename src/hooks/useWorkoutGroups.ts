@@ -1,21 +1,43 @@
-import { useQuery } from "@tanstack/react-query";
-import type { WorkoutGroup } from "../types/index";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import * as api from "../api/workoutGroups";
+import type { WorkoutGroup } from "../types";
+
 
 export function useWorkoutGroups() {
-  const { data, error, isLoading } = useQuery<WorkoutGroup[]>({
-    queryKey: ["workoutGroups"],
-    queryFn: async () => {
-      const response = await fetch("/api/workout-groups");
-      if (!response.ok) {
-        throw new Error("Network response was not ok");
-      }
-      return response.json();
+  const queryCliente = useQueryClient();
+  const queryKey = ["workoutGroups"];
+  const { data: workoutGroups, error, isLoading } = useQuery<WorkoutGroup[]>({
+    queryKey: queryKey,
+    queryFn: api.fetchWorkoutGroups,
+  });
+  
+  const {mutate: createGroup, isPending: isCreating} = useMutation({
+    mutationFn: api.createWorkoutGroup,
+    onSuccess: () => {
+      queryCliente.invalidateQueries({ queryKey: queryKey });
     },
+    onError: (error: Error) => {
+      console.error("Erro ao criar grupo de treino:", error.message);
+    }
+  });
+
+  const {mutate: deleteGroup, isPending: isDeleting} = useMutation({
+    mutationFn: api.deleteWorkoutGroup,
+    onSuccess: () => {
+      queryCliente.invalidateQueries({ queryKey: queryKey });
+    },
+    onError: (error: Error) => {
+      console.error("Erro ao deletar grupo de treino:", error.message);
+    }
   });
 
   return {
-    workoutGroups: data,
+    workoutGroups,
     error,
     isLoading,
+    createGroup,
+    isCreating,
+    deleteGroup,
+    isDeleting
   };
 }
