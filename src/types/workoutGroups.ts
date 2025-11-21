@@ -3,7 +3,7 @@ export interface WorkoutExercise {
   name: string;
   isFreeExercise: boolean;
   time?: number;
-  photo_url: string;
+  photo_url?: string;
   sets?: number;
   reps?: number;
   weight?: number;
