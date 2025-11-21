@@ -1,24 +1,22 @@
-interface InputComponentProps {
-    value: string;
+import React from "react";
+
+interface InputComponentProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'onChange'> {
+    value: string; 
     onChange: (value: string) => void; 
-    placeholder?: string;
-    type?: string; 
-    name?: string; 
 }
 
-export const InputComponent = ({ value, onChange, placeholder, type = "text", name }: InputComponentProps) => {
+export const InputComponent = ({ value, onChange, ...rest }: InputComponentProps) => {
     return (
         <input
-          value={value} 
-          onChange={(e) => onChange(e.target.value)}
-          placeholder={placeholder}
-          type={type}
-          name={name}
+          value={value}
+          onChange={(e) => onChange(e.target.value)} 
+          {...rest} 
           style={{ 
               border: "2px solid blue",
               borderRadius: "8px",
               padding: "0.5rem",
-              width: "100%"
+              width: "100%", 
+              ...rest.style
           }}
         />
     );

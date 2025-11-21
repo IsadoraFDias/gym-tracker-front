@@ -53,7 +53,7 @@ export const WorkoutGroupPage = () => {
                 }}
                 key={group.id}
               >
-                <Link to={`/workout-groups/${group.id}`}>
+                <Link to={`/workout-detail/${group.id}`}>
                   <strong>{group.name}</strong> - {group.description}
                 </Link>
                 <IconButton
